@@ -18,14 +18,20 @@ class QuestionViewModel : ViewModel() {
     // TODO: Implement the ViewModel
     private lateinit var job: Job
     private lateinit var questionList: MutableList<Question>
+    var answers = mutableListOf<String>()
     private var _idx = MutableLiveData<Int>()
     var checkedId:Int? =null
     val idx: LiveData<Int>
         get() = _idx
 
     fun getNextQuestion() {
+        answers.add(questionList[idx].options.get(checkedId))
         checkedId = null
         _idx.value = _idx.value!! + 1
+    }
+
+    fun updateAnswers(val answer:String){
+        answers.add(answer)
     }
 
     fun setQuestions(mContext: Context) {
