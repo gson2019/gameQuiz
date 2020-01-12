@@ -20,11 +20,15 @@
         android:label="QuestionFragment" >
         <action
             android:id="@+id/action_question_destination_to_summaryFragment"
-            app:destination="@id/summaryFragment" />
+            app:destination="@id/summary_destination" />
     </fragment>
     <fragment
-        android:id="@+id/summaryFragment"
+        android:id="@+id/summary_destination"
         android:name="com.example.gamequiz.SummaryFragment"
         android:label="summary_fragment"
-        tools:layout="@layout/summary_fragment" />
+        tools:layout="@layout/summary_fragment">
+<!--        <argument-->
+<!--            android:name="question_answer_list"-->
+<!--            app:argType="com.example.gamequiz.model.QuestionAnswer[]"/>-->
+    </fragment>
 </navigation>

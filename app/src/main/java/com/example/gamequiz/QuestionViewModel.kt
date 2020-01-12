@@ -1,10 +1,12 @@
 package com.example.gamequiz
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.gamequiz.model.QuestionAnswer
 import com.example.quiz.model.Question
 import com.example.quiz.model.Quiz
 import com.google.gson.Gson
@@ -18,20 +20,17 @@ class QuestionViewModel : ViewModel() {
     // TODO: Implement the ViewModel
     private lateinit var job: Job
     private lateinit var questionList: MutableList<Question>
-    var answers = mutableListOf<String>()
+    var answers = ArrayList<QuestionAnswer>()
     private var _idx = MutableLiveData<Int>()
     var checkedId:Int? =null
     val idx: LiveData<Int>
         get() = _idx
 
     fun getNextQuestion() {
-        answers.add(questionList[idx].options.get(checkedId))
+        Log.i("QUES", "Get Next Question")
+        answers.add(QuestionAnswer(questionList.get(idx.value!!).question, questionList.get(idx.value!!).options.get(checkedId!!)))
         checkedId = null
         _idx.value = _idx.value!! + 1
-    }
-
-    fun updateAnswers(val answer:String){
-        answers.add(answer)
     }
 
     fun setQuestions(mContext: Context) {

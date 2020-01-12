@@ -6,8 +6,13 @@
     android:orientation="vertical"
     tools:context=".SummaryFragment">
 
-  <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/summaryRv"
+  <ListView
+      android:id="@+id/summaryLv"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"/>
+
+<!--  <androidx.recyclerview.widget.RecyclerView-->
+<!--      android:id="@+id/summaryRv"-->
+<!--      android:layout_width="match_parent"-->
+<!--      android:layout_height="wrap_content"/>-->
 </LinearLayout>

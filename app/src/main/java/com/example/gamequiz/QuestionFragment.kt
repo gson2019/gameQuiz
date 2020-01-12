@@ -13,6 +13,8 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.example.gamequiz.model.QuestionAnswer
 import kotlinx.android.synthetic.main.question_fragment.*
 
 
@@ -86,6 +88,11 @@ class QuestionFragment : Fragment(), RadioGroup.OnCheckedChangeListener {
         builder.setPositiveButton("Go Summary"){
                 dialogInterface, which ->
             Toast.makeText(mContext, "clicked yes", Toast.LENGTH_LONG).show()
+
+            val array = arrayOfNulls<QuestionAnswer>(viewModel.answers.size)
+            findNavController().navigate(QuestionFragmentDirections.actionQuestionDestinationToSummaryFragment());
+//            findNavController().navigate(QuestionFragmentDirections.actionQuestionDestinationToSummaryFragment(viewModel.answers.toArray(array)))
+
         }
         builder.setNegativeButton("Back Question"){
                 dialogInterface, which ->
