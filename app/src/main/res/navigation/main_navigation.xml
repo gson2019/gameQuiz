@@ -27,8 +27,8 @@
         android:name="com.example.gamequiz.SummaryFragment"
         android:label="summary_fragment"
         tools:layout="@layout/summary_fragment">
-<!--        <argument-->
-<!--            android:name="question_answer_list"-->
-<!--            app:argType="com.example.gamequiz.model.QuestionAnswer[]"/>-->
+        <argument
+            android:name="question_answer_list"
+            app:argType="com.example.gamequiz.model.QuestionAnswerList"/>
     </fragment>
 </navigation>

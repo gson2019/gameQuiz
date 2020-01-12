@@ -1,10 +1,8 @@
 package com.example.gamequiz
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +10,11 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.example.gamequiz.model.QuestionAnswer
+import com.example.gamequiz.model.QuestionAnswerList
 import kotlinx.android.synthetic.main.question_fragment.*
 
 
@@ -47,8 +47,10 @@ class QuestionFragment : Fragment(), RadioGroup.OnCheckedChangeListener {
         viewModel = ViewModelProviders.of(this).get(QuestionViewModel::class.java)
         nextBtn.setOnClickListener {
             if(viewModel.idx.value == viewModel.getQuestionListSize()){
-                displayDialog()
-            }else {
+                displayDialog("End of Quiz", "Go to quiz result summary", true)
+            }else if(viewModel.checkedId == null){
+                displayDialog("Answer not Chosen", "Please choose an answer!", false)
+            }else{
                 viewModel.getNextQuestion()
             }
         }
@@ -56,7 +58,7 @@ class QuestionFragment : Fragment(), RadioGroup.OnCheckedChangeListener {
         viewModel.setQuestions(mContext)
         viewModel.idx.observe(this, Observer { idx ->
             if(idx == viewModel.getQuestionListSize()){
-                displayDialog()
+                displayDialog("End of Quiz", "Go to quiz result summary", true)
             }else {
                 Log.i("QUES", "Observe data")
                 val question = viewModel.getQuestionByIndex(idx)
@@ -80,19 +82,23 @@ class QuestionFragment : Fragment(), RadioGroup.OnCheckedChangeListener {
         })
     }
 
-    fun displayDialog(){
+    fun displayDialog(title:String, msg: String, quizEnd: Boolean){
         val builder = AlertDialog.Builder(mContext)
-        builder.setTitle("End of Quiz Reminder")
-        builder.setMessage("This is the last question, do you want to see your quiz summary?")
+        builder.setTitle(title)
+        builder.setMessage(msg)
         builder.setIcon(android.R.drawable.ic_dialog_alert)
         builder.setPositiveButton("Go Summary"){
                 dialogInterface, which ->
             Toast.makeText(mContext, "clicked yes", Toast.LENGTH_LONG).show()
-
-            val array = arrayOfNulls<QuestionAnswer>(viewModel.answers.size)
-            findNavController().navigate(QuestionFragmentDirections.actionQuestionDestinationToSummaryFragment());
-//            findNavController().navigate(QuestionFragmentDirections.actionQuestionDestinationToSummaryFragment(viewModel.answers.toArray(array)))
-
+            if(quizEnd) {
+                val qaList = QuestionAnswerList()
+                qaList.addAll(viewModel.answers)
+                findNavController().navigate(
+                    QuestionFragmentDirections.actionQuestionDestinationToSummaryFragment(
+                        qaList
+                    )
+                );
+            }
         }
         builder.setNegativeButton("Back Question"){
                 dialogInterface, which ->
@@ -107,7 +113,9 @@ class QuestionFragment : Fragment(), RadioGroup.OnCheckedChangeListener {
         super.onDestroy()
         if(alertDialog != null)
             alertDialog!!.dismiss()
-        viewModel.idx.removeObservers(this)
+        if(::viewModel.isInitialized){
+            viewModel.idx.removeObservers(this)
+        }
     }
 
 }

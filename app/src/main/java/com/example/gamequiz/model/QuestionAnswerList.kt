@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class QuestionAnswer constructor(val question: String, val answer: String) : Parcelable
+class QuestionAnswerList: ArrayList<QuestionAnswer>(), Parcelable

@@ -1,17 +1,19 @@
 package com.example.gamequiz
 
 //import com.example.gamequiz.SummaryFragmentArgs.Companion.fromBundle
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.summary_fragment.*
 
 
 class SummaryFragment : Fragment() {
-//    val qaList by lazy {
-//        QuestionfromBundle(arguments!!).questionAnswerList
-//    }
+    val qaList by lazy {
+        SummaryFragmentArgs.fromBundle(arguments!!).questionAnswerList
+    }
 
     companion object {
         fun newInstance() = SummaryFragment()
@@ -27,16 +29,9 @@ class SummaryFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-//        val adapter = SummaryAdapter(activity as Context, qaList.toMutableList())
-//        summaryLv.adapter = adapter
+        val adapter = SummaryAdapter(activity as Context, qaList.toMutableList())
+        summaryLv.adapter = adapter
         // TODO: Use the ViewModel
     }
-
-//    private fun observeSummary(viewModel: QuestionViewModel){
-//        viewModel.answers.observe(this, Observer {
-//           val adapter = SummaryAdapter(activity as Context, it)
-//            summaryLv.adapter = adapter
-//        })
-//    }
 
 }
